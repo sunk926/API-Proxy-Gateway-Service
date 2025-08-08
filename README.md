@@ -171,13 +171,36 @@ vercel --prod
 npm i -g wrangler
 ```
 
-2. **配置 wrangler.toml**
-编辑 `wrangler.toml` 文件，设置您的账户信息。
-
-3. **部署到 Cloudflare Workers**
+2. **登录 Cloudflare**
 ```bash
-wrangler publish
+wrangler login
 ```
+
+3. **设置 API Keys**
+```bash
+wrangler secret put GEMINI_API_KEYS
+# 输入您的 Gemini API Keys（多个用逗号分隔）
+```
+
+4. **部署到 Cloudflare Workers**
+```bash
+# 使用自动化脚本（推荐）
+./scripts/deploy-cloudflare.sh
+
+# 或手动部署
+npm run cf:deploy:prod
+```
+
+5. **查看部署状态**
+```bash
+# 查看实时日志
+npm run cf:tail
+
+# 查看部署列表
+wrangler deployments list
+```
+
+详细部署指南请参考：[Cloudflare Workers 部署指南](docs/CLOUDFLARE_DEPLOYMENT.md)
 
 ### AWS Lambda 部署
 

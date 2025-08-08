@@ -12,7 +12,12 @@
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit",
     "clean": "rimraf dist",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "npm run build && wrangler deploy",
+    "cf:deploy:prod": "npm run build && wrangler deploy --env production",
+    "cf:tail": "wrangler tail",
+    "cf:login": "wrangler login"
   },
   "keywords": [
     "api-proxy",
