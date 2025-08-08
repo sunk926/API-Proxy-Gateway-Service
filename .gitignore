@@ -1,0 +1,247 @@
+# API 代理网关服务 - Git 忽略文件
+
+# ==================== Node.js ====================
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 运行时数据
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 覆盖率目录
+lib-cov
+coverage/
+*.lcov
+.nyc_output
+
+# 构建输出
+dist/
+build/
+out/
+
+# ==================== 环境变量和配置 ====================
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 配置文件
+config.json
+config.local.json
+
+# ==================== IDE 和编辑器 ====================
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# WebStorm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ==================== 操作系统 ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==================== TypeScript ====================
+# TypeScript 编译输出
+*.tsbuildinfo
+
+# ==================== 测试 ====================
+# Jest
+coverage/
+*.coverage
+.jest/
+
+# Mocha
+.mocha/
+
+# ==================== 日志文件 ====================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ==================== 临时文件 ====================
+tmp/
+temp/
+.tmp/
+.temp/
+
+# ==================== 部署相关 ====================
+# Vercel
+.vercel
+
+# Netlify
+.netlify/
+
+# Serverless
+.serverless/
+
+# AWS
+.aws/
+
+# ==================== Docker ====================
+# Docker 相关文件（保留 Dockerfile 和 docker-compose.yml）
+.dockerignore
+
+# ==================== 数据库 ====================
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# ==================== 缓存 ====================
+# npm
+.npm
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettiercache
+
+# ==================== 安全相关 ====================
+# API Keys 和密钥文件
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# SSL 证书
+ssl/
+certs/
+*.crt
+*.cert
+
+# ==================== 备份文件 ====================
+*.bak
+*.backup
+*.old
+*.orig
+
+# ==================== 压缩文件 ====================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ==================== 项目特定 ====================
+# 本地开发配置
+local.json
+dev.json
+
+# 测试数据
+test-data/
+mock-data/
+
+# 文档生成
+docs/generated/
+
+# 性能分析
+*.cpuprofile
+*.heapprofile
+
+# ==================== 监控和分析 ====================
+# Sentry
+.sentryclirc
+
+# 性能监控
+newrelic_agent.log
+
+# ==================== 其他 ====================
+# 编辑器生成的文件
+*.tmp
+*.temp
+*~
+
+# 系统生成的文件
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# 包管理器锁定文件（根据项目需要选择保留）
+# package-lock.json
+# yarn.lock
+
+# 本地开发服务器
+.next/
+.nuxt/
+.vuepress/dist
+
+# 静态文件生成
+public/generated/
+static/generated/

@@ -1,0 +1,81 @@
+{
+  "version": 2,
+  "name": "api-proxy-gateway-service",
+  "builds": [
+    {
+      "src": "dist/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/health",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/stats",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/chat/completions",
+      "dest": "/dist/index.js",
+      "methods": ["POST", "OPTIONS"]
+    },
+    {
+      "src": "/v1/chat/completions",
+      "dest": "/dist/index.js",
+      "methods": ["POST", "OPTIONS"]
+    },
+    {
+      "src": "/verify",
+      "dest": "/dist/index.js",
+      "methods": ["POST", "OPTIONS"]
+    },
+    {
+      "src": "/v1beta/(.*)",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/v1/(.*)",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "dist/index.js": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, x-goog-api-key, User-Agent, Accept"
+        },
+        {
+          "key": "Access-Control-Max-Age",
+          "value": "86400"
+        }
+      ]
+    }
+  ]
+}

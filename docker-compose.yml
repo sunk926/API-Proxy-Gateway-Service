@@ -1,0 +1,125 @@
+# Docker Compose 配置文件
+# 用途：本地开发和测试环境的容器编排
+
+version: '3.8'
+
+services:
+  # API 代理网关服务
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: api-proxy-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - LOG_LEVEL=debug
+      - LOAD_BALANCE_STRATEGY=round_robin
+      - CIRCUIT_BREAKER_FAILURE_THRESHOLD=3
+      - CIRCUIT_BREAKER_RESET_TIMEOUT=60000
+      - GEMINI_BASE_URL=https://generativelanguage.googleapis.com
+      - GEMINI_API_VERSION=v1beta
+      - GEMINI_TIMEOUT=30000
+      - CORS_ORIGIN=*
+      - HELMET_ENABLED=false
+      - RATE_LIMIT_ENABLED=false
+      - MONITORING_ENABLED=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - api-gateway-network
+
+  # Redis 缓存服务（可选）
+  redis:
+    image: redis:7-alpine
+    container_name: api-gateway-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - api-gateway-network
+
+  # Nginx 反向代理（可选）
+  nginx:
+    image: nginx:alpine
+    container_name: api-gateway-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - api-gateway-network
+
+  # 监控服务 - Prometheus（可选）
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: api-gateway-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - api-gateway-network
+
+  # 监控服务 - Grafana（可选）
+  grafana:
+    image: grafana/grafana:latest
+    container_name: api-gateway-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - api-gateway-network
+
+# 网络配置
+networks:
+  api-gateway-network:
+    driver: bridge
+
+# 数据卷配置
+volumes:
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
